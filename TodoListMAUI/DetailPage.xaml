@@ -7,7 +7,7 @@
              Title="Detail Page">
     <VerticalStackLayout>
         <Label 
-            Text="{Binding Text}"
+            Text="{Binding Text, StringFormat='You selected {0}'}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 

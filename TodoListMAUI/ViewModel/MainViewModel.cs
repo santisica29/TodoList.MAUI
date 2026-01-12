@@ -2,13 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace TodoListMAUI.ViewModel;
 public partial class MainViewModel : ObservableObject
 {
-    public MainViewModel()
+    IConnectivity connectivity;
+    public MainViewModel(IConnectivity connectivity)
     {
         items = new ObservableCollection<string>();
+        this.connectivity = connectivity;
     }
     [ObservableProperty]
      ObservableCollection<string> items;
@@ -17,10 +20,15 @@ public partial class MainViewModel : ObservableObject
     string text;
 
     [RelayCommand]
-    void Add()
+    async Task Add()
     {
         if (string.IsNullOrWhiteSpace(Text))
             return;
+
+        if (connectivity.NetworkAccess != NetworkAccess.Internet)
+        {
+            await Shell.Current.DisplayAlert("Error","No Internet", "Ok");
+        }
 
         // add our item
         Items.Add(Text);
