@@ -36,7 +36,14 @@
                 BackgroundColor="{DynamicResource Tertiary}"/>
 
         <CollectionView Grid.Row="3" Grid.ColumnSpan="2"
-                        ItemsSource="{Binding Items}">
+                        ItemsSource="{Binding Items}"
+                        SelectionMode="None"
+                        >
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout 
+                    Orientation="Vertical"
+                    ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type x:String}">
                     
@@ -71,11 +78,17 @@
                                            />
                             </SwipeItems>
                         </SwipeView.RightItems>
-                        <Grid >
-                            <Border>
+                        <Grid>
+                            <Border >
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=TapCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
                                 <Label Text="{Binding .}"
                                        FontSize="30"
-                                       Padding="10"/>
+                                       Padding="10"
+                                       />
                             </Border>
                         </Grid>
                     </SwipeView>

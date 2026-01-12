@@ -33,4 +33,10 @@ public partial class MainViewModel : ObservableObject
         // Items.Contains is not necessary since Items.Remove first search if it exists
         Items.Remove(s);
     }
+
+    [RelayCommand]
+    async Task Tap(string s)
+    {
+        await Shell.Current.GoToAsync($"{nameof(DetailPage)}?Text={s}");
+    }
 }
