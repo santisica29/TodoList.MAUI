@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TodoListMAUI.MainPage">
+             x:Class="TodoListMAUI.MainPage"
+             xmlns:viewmodel="clr-namespace:TodoListMAUI.ViewModel"
+             x:DataType="viewmodel:MainViewModel">
 
     <Grid RowDefinitions="100, Auto, Auto, *"
           ColumnDefinitions=".75*, .25*"
@@ -24,44 +26,38 @@
                />
 
         <Entry Placeholder="Enter task"
-               Grid.Row="2"/>
+               Grid.Row="2"
+               Text="{Binding Text}"/>
+        
         <Button Text="Add"
+                Command="{Binding AddCommand}"
                 Grid.Row="2"
                 Grid.Column="1"
                 BackgroundColor="{DynamicResource Tertiary}"/>
 
-        <CollectionView Grid.Row="3" Grid.ColumnSpan="2">
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Apples</x:String>
-                    <x:String>Oranges</x:String>
-                    <x:String>Bananas</x:String>
-                    <x:String>Mango</x:String>
-                </x:Array>
-            </CollectionView.ItemsSource>
-
+        <CollectionView Grid.Row="3" Grid.ColumnSpan="2"
+                        ItemsSource="{Binding Items}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItem Text="Delete"
-                                       BackgroundColor="DarkRed">
-                                
-                            </SwipeItem>
-                        </SwipeView.RightItems>
-                        <Grid Padding="0,5">
-                            <Border>
-                                <Label Text="{Binding .}"
-                                       TextColor="{DynamicResource Tertiary}"
-               FontSize="24"
-               FontAttributes="Bold"
-               Padding="15"/>
-                            </Border>
-                        </Grid>
-                    </SwipeView>
+                <DataTemplate x:DataType="{x:Type x:String}">
+                    <Grid ColumnDefinitions=".80*,.20*" 
+                        Padding="0,5">
+
+                        <Label Grid.Column="0" 
+                                Text="{Binding .}"
+                                TextColor="{DynamicResource Tertiary}"
+                                 FontSize="24"
+                                FontAttributes="Bold"
+                                Padding="15"/>
+
+                        <Button Grid.Column="1" 
+                                Text="Delete"
+                                BackgroundColor="DarkRed"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteCommand}"
+                                CommandParameter="{Binding .}">
+                        </Button>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-            
         </CollectionView>
     </Grid>
 
